@@ -113,7 +113,7 @@ class WebhookServer {
                 // Mock
                 let routeName = self._getRouteName(req);
                 if (!routeName) {
-                    log('No route found on url', 1);
+                    // log('No route found on url', 1);
                     res.statusCode = 400;
                     res.end(JSON.stringify({
                         status: 'warning',
@@ -124,7 +124,7 @@ class WebhookServer {
                 }
                 let route = self.options.routes[routeName];
                 if (!route) {
-                    log(`Warning: Route "${routeName}" not found`, 1);
+                    // log(`Warning: Route "${routeName}" not found`, 1);
                     res.statusCode = 400;
                     res.end(JSON.stringify({
                         status: 'warning',
