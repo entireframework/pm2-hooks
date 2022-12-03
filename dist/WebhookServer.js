@@ -153,11 +153,11 @@ var WebhookServer = function () {
                                 routeName = self._getRouteName(req);
 
                                 if (routeName) {
-                                    _context.next = 7;
+                                    _context.next = 6;
                                     break;
                                 }
 
-                                log('No route found on url', 1);
+                                // log('No route found on url', 1);
                                 res.statusCode = 400;
                                 res.end(JSON.stringify({
                                     status: 'warning',
@@ -166,15 +166,15 @@ var WebhookServer = function () {
                                 }));
                                 return _context.abrupt('return');
 
-                            case 7:
+                            case 6:
                                 route = self.options.routes[routeName];
 
                                 if (route) {
-                                    _context.next = 13;
+                                    _context.next = 11;
                                     break;
                                 }
 
-                                log('Warning: Route "' + routeName + '" not found', 1);
+                                // log(`Warning: Route "${routeName}" not found`, 1);
                                 res.statusCode = 400;
                                 res.end(JSON.stringify({
                                     status: 'warning',
@@ -183,33 +183,33 @@ var WebhookServer = function () {
                                 }));
                                 return _context.abrupt('return');
 
-                            case 13:
+                            case 11:
 
                                 // Prepare the execution of the method
                                 payload = self._parseRequest(req, route);
                                 result = void 0;
-                                _context.prev = 15;
+                                _context.prev = 13;
 
                                 result = route.method(payload);
 
                                 if (!isPromise(result)) {
-                                    _context.next = 21;
+                                    _context.next = 19;
                                     break;
                                 }
 
-                                _context.next = 20;
+                                _context.next = 18;
                                 return result;
 
-                            case 20:
+                            case 18:
                                 result = _context.sent;
 
-                            case 21:
-                                _context.next = 30;
+                            case 19:
+                                _context.next = 28;
                                 break;
 
-                            case 23:
-                                _context.prev = 23;
-                                _context.t0 = _context['catch'](15);
+                            case 21:
+                                _context.prev = 21;
+                                _context.t0 = _context['catch'](13);
                                 message = _context.t0.message ? _context.t0.message : _context.t0;
 
                                 log('Error: Route "' + routeName + '" method error: ' + message, 2);
@@ -221,7 +221,7 @@ var WebhookServer = function () {
                                 }));
                                 return _context.abrupt('return');
 
-                            case 30:
+                            case 28:
 
                                 log('Success: Route "' + routeName + '" was found', 0);
                                 res.end(JSON.stringify({
@@ -230,11 +230,11 @@ var WebhookServer = function () {
                                     code: 0,
                                     result: result
                                 }));
-                                _context.next = 39;
+                                _context.next = 37;
                                 break;
 
-                            case 34:
-                                _context.prev = 34;
+                            case 32:
+                                _context.prev = 32;
                                 _context.t1 = _context['catch'](0);
 
                                 log(_context.t1.message, 2);
@@ -245,12 +245,12 @@ var WebhookServer = function () {
                                     code: 2
                                 }));
 
-                            case 39:
+                            case 37:
                             case 'end':
                                 return _context.stop();
                         }
                     }
-                }, _callee, this, [[0, 34], [15, 23]]);
+                }, _callee, this, [[0, 32], [13, 21]]);
             })));
         }
 
