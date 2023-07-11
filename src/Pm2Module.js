@@ -112,8 +112,7 @@ class Pm2Module {
                         self._runCommand(
                             config.command,
                             commandOptions,
-                            (m) => log(`${name}: ${m}`),
-                            (e) => log(`${name}: ${e}`, 2)
+                            (m) => log(`${name}: ${m}`)
                         )
                             .catch((e) => onError(name, e));
                     }
@@ -141,13 +140,15 @@ class Pm2Module {
      * @returns {Promise<code>} The code of the error, or a void fulfilled promise
      * @private
      */
-    static _runCommand(command, options = {}, log, error) {
+    static _runCommand(command, options = {}, log) {
         _.defaults(options, {
             env: process.env,
             shell: true
         });
         return new Promise((resolve, reject) => {
             let child = childProcess.spawn('eval', [command], options);
+
+            let errors = "";
 
             child.stdout.setEncoding('utf8');
             child.stdout.on('data', (data) => {
@@ -156,14 +157,17 @@ class Pm2Module {
 
             child.stderr.setEncoding('utf8');
             child.stderr.on('data', (data) => {
-                error(data);
+                log(data);
+
+                data=data.toString();
+                errors+=data;
             });
 
             child.on('close', (code) => {
                 if (!code) {
                     resolve();
                 } else {
-                    reject(code);
+                    reject(errors);
                 }
             });
         });
