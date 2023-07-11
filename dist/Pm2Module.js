@@ -120,6 +120,7 @@ var Pm2Module = function () {
             var self = this;
             var name = app.name || 'unknown';
             var cwd = config.cwd || app.pm_cwd || app.pm2_env.cwd || app.pm2_env.pm_cwd;
+            // eslint-disable-next-line prefer-object-spread
             var commandOptions = Object.assign({}, { cwd: cwd }, config.commandOptions || {});
             var route = {
                 name: name,
@@ -171,12 +172,17 @@ var Pm2Module = function () {
             });
             return new Promise(function (resolve, reject) {
                 var child = childProcess.spawn('eval', [command], options);
-                child.on('error', function (error) {
-                    log(error);
+
+                child.stdout.setEncoding('utf8');
+                child.stdout.on('data', function (data) {
+                    console.log('stdout: ' + data);
                 });
-                child.on('message', function (message) {
-                    log(message);
+
+                child.stderr.setEncoding('utf8');
+                child.stderr.on('data', function (data) {
+                    console.log('stderr: ' + data);
                 });
+
                 child.on('close', function (code) {
                     if (!code) {
                         resolve();

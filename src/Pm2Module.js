@@ -98,7 +98,8 @@ class Pm2Module {
         let self = this;
         let name = app.name || 'unknown';
         let cwd = config.cwd || app.pm_cwd || app.pm2_env.cwd || app.pm2_env.pm_cwd;
-        let commandOptions = { cwd, ...config.commandOptions || {} };
+        // eslint-disable-next-line prefer-object-spread
+        let commandOptions = Object.assign({}, { cwd }, config.commandOptions || {});
         let route = {
             name,
             type: config.type,
