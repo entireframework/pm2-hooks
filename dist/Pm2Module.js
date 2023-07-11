@@ -131,7 +131,11 @@ var Pm2Module = function () {
                     try {
                         if (config.command) {
                             log('Running command: ' + config.command);
-                            self._runCommand(config.command, commandOptions, log).catch(function (e) {
+                            self._runCommand(config.command, commandOptions, function (m) {
+                                return log(name + ': ' + m);
+                            }, function (e) {
+                                return log(name + ': ' + e, 2);
+                            }).catch(function (e) {
                                 return onError(name, e);
                             });
                         }
@@ -165,6 +169,7 @@ var Pm2Module = function () {
         value: function _runCommand(command) {
             var options = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
             var log = arguments[2];
+            var error = arguments[3];
 
             _.defaults(options, {
                 env: process.env,
@@ -175,12 +180,12 @@ var Pm2Module = function () {
 
                 child.stdout.setEncoding('utf8');
                 child.stdout.on('data', function (data) {
-                    console.log('stdout: ' + data);
+                    log(data);
                 });
 
                 child.stderr.setEncoding('utf8');
                 child.stderr.on('data', function (data) {
-                    console.log('stderr: ' + data);
+                    error(data);
                 });
 
                 child.on('close', function (code) {
