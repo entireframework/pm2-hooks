@@ -56,8 +56,8 @@ class Pm2Module {
      */
     static _parseProcesses(processes) {
         return processes
-            .map(p => Pm2Module._parseProcess(p))
-            .filter(p => !!p)
+            .map((p) => Pm2Module._parseProcess(p))
+            .filter((p) => !!p)
             .reduce((routes, app) => {
                 routes[app.name] = app;
                 delete app.name;
@@ -98,7 +98,7 @@ class Pm2Module {
         let self = this;
         let name = app.name || 'unknown';
         let cwd = config.cwd || app.pm_cwd || app.pm2_env.cwd || app.pm2_env.pm_cwd;
-        let commandOptions = Object.assign({}, { cwd }, config.commandOptions || {});
+        let commandOptions = { cwd, ...config.commandOptions || {} };
         let route = {
             name,
             type: config.type,
@@ -109,7 +109,7 @@ class Pm2Module {
                     if (config.command) {
                         log(`Running command: ${config.command}`);
                         self._runCommand(config.command, commandOptions, log)
-                            .catch(e => onError(name, e));
+                            .catch((e) => onError(name, e));
                     }
                 } catch (e) {
                     onError(name, e);
@@ -142,12 +142,17 @@ class Pm2Module {
         });
         return new Promise((resolve, reject) => {
             let child = childProcess.spawn('eval', [command], options);
-            child.on('error', (error) => {
-                log(error);
+
+            child.stdout.setEncoding('utf8');
+            child.stdout.on('data', (data) => {
+                console.log(`stdout: ${data}`);
             });
-            child.on('message', (message) => {
-                log(message);
+
+            child.stderr.setEncoding('utf8');
+            child.stderr.on('data', (data) => {
+                console.log(`stderr: ${data}`);
             });
+
             child.on('close', (code) => {
                 if (!code) {
                     resolve();
