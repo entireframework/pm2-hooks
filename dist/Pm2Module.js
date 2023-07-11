@@ -130,7 +130,7 @@ var Pm2Module = function () {
                     try {
                         if (config.command) {
                             log('Running command: ' + config.command);
-                            self._runCommand(config.command, commandOptions).catch(function (e) {
+                            self._runCommand(config.command, commandOptions, log).catch(function (e) {
                                 return onError(name, e);
                             });
                         }
@@ -163,6 +163,7 @@ var Pm2Module = function () {
         key: '_runCommand',
         value: function _runCommand(command) {
             var options = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
+            var log = arguments[2];
 
             _.defaults(options, {
                 env: process.env,
@@ -170,6 +171,12 @@ var Pm2Module = function () {
             });
             return new Promise(function (resolve, reject) {
                 var child = childProcess.spawn('eval', [command], options);
+                child.on('error', function (error) {
+                    log(error);
+                });
+                child.on('message', function (message) {
+                    log(message);
+                });
                 child.on('close', function (code) {
                     if (!code) {
                         resolve();
