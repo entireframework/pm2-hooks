@@ -25,6 +25,7 @@ var Pm2Module = function () {
         options.routes = Pm2Module._parseProcesses(processes);
         this.routes = options.routes;
         this.webhookServer = new WebhookServer(options);
+        this.runningCommand = {};
     }
 
     _createClass(Pm2Module, [{
@@ -131,7 +132,7 @@ var Pm2Module = function () {
                     try {
                         if (config.command) {
                             log('Running command: ' + config.command);
-                            self._runCommand(config.command, commandOptions, function (m) {
+                            self._runCommand(name, config.command, commandOptions, function (m) {
                                 return log(name + ': ' + m);
                             }).catch(function (e) {
                                 return onError(name, e);
@@ -156,6 +157,7 @@ var Pm2Module = function () {
         /**
          * Runs a line command.
          *
+         * @param {String} name The route name
          * @param {String} command The line to execute
          * @param {Object} options The object options
          * @returns {Promise<code>} The code of the error, or a void fulfilled promise
@@ -164,27 +166,32 @@ var Pm2Module = function () {
 
     }, {
         key: '_runCommand',
-        value: function _runCommand(command) {
-            var options = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
-            var log = arguments[2];
+        value: function _runCommand(name, command) {
+            var _this2 = this;
+
+            var options = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
+            var logFn = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : log;
 
             _.defaults(options, {
                 env: process.env,
                 shell: true
             });
+
             return new Promise(function (resolve, reject) {
+                _this2._killRunningCommand(name);
                 var child = childProcess.spawn('eval', [command], options);
+                _this2.runningCommand[name] = child;
 
                 var errors = "";
 
                 child.stdout.setEncoding('utf8');
                 child.stdout.on('data', function (data) {
-                    log(data);
+                    logFn(data);
                 });
 
                 child.stderr.setEncoding('utf8');
                 child.stderr.on('data', function (data) {
-                    log(data);
+                    logFn(data);
 
                     data = data.toString();
                     errors += data;
@@ -198,6 +205,18 @@ var Pm2Module = function () {
                     }
                 });
             });
+        }
+    }, {
+        key: '_killRunningCommand',
+        value: function _killRunningCommand(name) {
+            try {
+                if (this.runningCommand[name]) {
+                    this.runningCommand[name].kill();
+                    this.runningCommand[name] = null;
+                }
+            } catch (e) {
+                console.log(e);
+            }
         }
     }]);
 

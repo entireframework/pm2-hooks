@@ -36,7 +36,8 @@ class WebhookServer {
     start() {
         return new Promise((resolve, reject) => {
             if (this.server) {
-                return reject('Server previously started');
+                reject('Server previously started');
+                return;
             }
             this.server = http.createServer(this._handleCall.bind(this));
             this.server.listen(this.options.port, (err) => {
@@ -55,7 +56,8 @@ class WebhookServer {
     stop() {
         return new Promise((resolve) => {
             if (!this.server) {
-                return resolve(this);
+                resolve(this);
+                return;
             }
             this.server.close(() => {
                 delete this.server;
@@ -238,7 +240,7 @@ class WebhookServer {
                 bitbucket() {
                     let error = false;
                     let requiredHeaders = ['x-event-key', 'x-request-uuid'];
-                    if (requiredHeaders.some(k => !req.headers[k])) {
+                    if (requiredHeaders.some((k) => !req.headers[k])) {
                         error = 'Invalid headers';
                     } else if (route.secret) {
                         error = 'Secret not supported for bitbucket yet';

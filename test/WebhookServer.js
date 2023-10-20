@@ -66,6 +66,7 @@ describe('webhookServer', () => {
         });
     });
 
+    // eslint-disable-next-line default-param-last
     describe('call handler', (whs, calls = 0, method) => {
         before(() => {
             whs = new WebhookServer({

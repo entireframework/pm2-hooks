@@ -13,6 +13,7 @@ class Pm2Module {
         options.routes = Pm2Module._parseProcesses(processes);
         this.routes = options.routes;
         this.webhookServer = new WebhookServer(options);
+        this.runningCommand = {};
     }
 
     start() {
@@ -110,6 +111,7 @@ class Pm2Module {
                     if (config.command) {
                         log(`Running command: ${config.command}`);
                         self._runCommand(
+                            name,
                             config.command,
                             commandOptions,
                             (m) => log(`${name}: ${m}`)
@@ -135,32 +137,36 @@ class Pm2Module {
     /**
      * Runs a line command.
      *
+     * @param {String} name The route name
      * @param {String} command The line to execute
      * @param {Object} options The object options
      * @returns {Promise<code>} The code of the error, or a void fulfilled promise
      * @private
      */
-    static _runCommand(command, options = {}, log) {
+    static _runCommand(name, command, options = {}, logFn = log) {
         _.defaults(options, {
             env: process.env,
             shell: true
         });
+
         return new Promise((resolve, reject) => {
+            this._killRunningCommand(name);
             let child = childProcess.spawn('eval', [command], options);
+            this.runningCommand[name] = child;
 
             let errors = "";
 
             child.stdout.setEncoding('utf8');
             child.stdout.on('data', (data) => {
-                log(data);
+                logFn(data);
             });
 
             child.stderr.setEncoding('utf8');
             child.stderr.on('data', (data) => {
-                log(data);
+                logFn(data);
 
-                data=data.toString();
-                errors+=data;
+                data = data.toString();
+                errors += data;
             });
 
             child.on('close', (code) => {
@@ -171,6 +177,17 @@ class Pm2Module {
                 }
             });
         });
+    }
+
+    static _killRunningCommand(name) {
+        try {
+            if (this.runningCommand[name]) {
+                this.runningCommand[name].kill();
+                this.runningCommand[name] = null;
+            }
+        } catch (e) {
+            console.log(e);
+        }
     }
 }
 

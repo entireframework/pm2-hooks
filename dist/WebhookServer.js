@@ -56,7 +56,8 @@ var WebhookServer = function () {
 
             return new Promise(function (resolve, reject) {
                 if (_this.server) {
-                    return reject('Server previously started');
+                    reject('Server previously started');
+                    return;
                 }
                 _this.server = http.createServer(_this._handleCall.bind(_this));
                 _this.server.listen(_this.options.port, function (err) {
@@ -80,7 +81,8 @@ var WebhookServer = function () {
 
             return new Promise(function (resolve) {
                 if (!_this2.server) {
-                    return resolve(_this2);
+                    resolve(_this2);
+                    return;
                 }
                 _this2.server.close(function () {
                     delete _this2.server;
