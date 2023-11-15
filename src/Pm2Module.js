@@ -152,6 +152,9 @@ class Pm2Module {
         return new Promise((resolve, reject) => {
             this._killRunningCommand(name);
             let child = childProcess.spawn('eval', [command], options);
+            if (!this.runningCommand) {
+                this.runningCommand = {};
+            }
             this.runningCommand[name] = child;
 
             let errors = "";
@@ -181,7 +184,7 @@ class Pm2Module {
 
     static _killRunningCommand(name) {
         try {
-            if (this.runningCommand[name]) {
+            if (this.runningCommand?.[name]) {
                 this.runningCommand[name].kill();
                 this.runningCommand[name] = null;
             }
