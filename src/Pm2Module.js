@@ -184,7 +184,7 @@ class Pm2Module {
 
     static _killRunningCommand(name) {
         try {
-            if (this.runningCommand?.[name]) {
+            if (this.runningCommand && this.runningCommand[name]) {
                 this.runningCommand[name].kill();
                 this.runningCommand[name] = null;
             }

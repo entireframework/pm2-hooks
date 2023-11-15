@@ -45,11 +45,11 @@
       "@entireframework/pm2-hooks": [
         {
           "file": ".babelrc",
-          "hash": "17737119193917337635"
+          "hash": "2308888785069258459"
         },
         {
           "file": ".codeclimate.yml",
-          "hash": "17307627018438084432"
+          "hash": "16531949520289678024"
         },
         {
           "file": ".eslintignore",
@@ -57,39 +57,55 @@
         },
         {
           "file": ".eslintrc.json",
-          "hash": "3377029513279244540"
+          "hash": "6036449624345864513"
         },
         {
           "file": ".gitignore",
-          "hash": "8740531576417661926"
+          "hash": "10025871269276304329"
         },
         {
           "file": ".nvmrc",
           "hash": "15545342537269968493"
         },
         {
+          "file": ".nx/cache/file-map.json",
+          "hash": "13480953949785406534"
+        },
+        {
+          "file": ".nx/cache/lockfile.hash",
+          "hash": "15635027524535983012"
+        },
+        {
+          "file": ".nx/cache/parsed-lock-file.json",
+          "hash": "15292518499343417560"
+        },
+        {
+          "file": ".nx/cache/project-graph.json",
+          "hash": "15020762672263339611"
+        },
+        {
           "file": ".travis.yml",
-          "hash": "11540369443774777033"
+          "hash": "10406909734350138217"
         },
         {
           "file": "CHANGELOG.md",
-          "hash": "2897722520755418405"
+          "hash": "12065310083489048804"
         },
         {
           "file": "LICENSE",
-          "hash": "17211555193680508488"
+          "hash": "5981285890252822738"
         },
         {
           "file": "README.md",
-          "hash": "14257733961500742687"
+          "hash": "14280261520241525531"
         },
         {
           "file": "dist/Pm2Module.js",
-          "hash": "4974984790527423616"
+          "hash": "10381383286039264310"
         },
         {
           "file": "dist/WebhookServer.js",
-          "hash": "1640931700869769734"
+          "hash": "4947676468171496522"
         },
         {
           "file": "dist/index.js",
@@ -113,42 +129,55 @@
         },
         {
           "file": "lerna.json",
-          "hash": "6831936215332511912"
+          "hash": "10076811976416177487"
         },
         {
           "file": "nx.json",
-          "hash": "8983414443364458775"
+          "hash": "16807400120333275897"
         },
         {
           "file": "package.json",
-          "hash": "11335361359428200687",
+          "hash": "5485177275859087220",
           "deps": [
             "npm:babel-regenerator-runtime",
+            "npm:body-parser",
             "npm:co",
+            "npm:concurrently",
+            "npm:ipaddr.js",
+            "npm:lerna",
             "npm:lodash",
+            "npm:nx",
+            "npm:pm2",
             "npm:pmx",
             "npm:promisify-node",
             "npm:require-dir",
             "npm:babel",
             "npm:babel-cli",
             "npm:babel-preset-es2015",
+            "npm:chai",
             "npm:chai-as-promised",
             "npm:chai-shallow-deep-equal",
+            "npm:eslint",
             "npm:eslint-config-airbnb",
+            "npm:eslint-plugin-import",
+            "npm:eslint-plugin-jsx-a11y",
+            "npm:eslint-plugin-react",
             "npm:istanbul",
+            "npm:mocha",
             "npm:mock-spawn",
             "npm:request",
             "npm:request-promise",
+            "npm:sinon",
             "npm:url-join"
           ]
         },
         {
           "file": "src/Pm2Module.js",
-          "hash": "16730588703184919408"
+          "hash": "9991671871337162626"
         },
         {
           "file": "src/WebhookServer.js",
-          "hash": "9892110171788278277"
+          "hash": "14339741910811093130"
         },
         {
           "file": "src/index.js",
@@ -176,7 +205,7 @@
         },
         {
           "file": "test/WebhookServer.js",
-          "hash": "13327478743479490639"
+          "hash": "18344826173569794573"
         },
         {
           "file": "test/assets/c.js",
@@ -204,15 +233,15 @@
         },
         {
           "file": "test/mocks/apps.js",
-          "hash": "13626023565587924642"
+          "hash": "1913131869943583242"
         },
         {
           "file": "test/mocks/bitbucket_push.json",
-          "hash": "10526116040388888792"
+          "hash": "1319663410318010776"
         },
         {
           "file": "test/mocks/github_push.json",
-          "hash": "16998687854771422098"
+          "hash": "5076765252705972249"
         },
         {
           "file": "test/utils.js",
@@ -220,7 +249,7 @@
         },
         {
           "file": "yarn.lock",
-          "hash": "16679226534505573609"
+          "hash": "15260261399072731227"
         }
       ]
     },

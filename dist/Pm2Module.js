@@ -180,6 +180,9 @@ var Pm2Module = function () {
             return new Promise(function (resolve, reject) {
                 _this2._killRunningCommand(name);
                 var child = childProcess.spawn('eval', [command], options);
+                if (!_this2.runningCommand) {
+                    _this2.runningCommand = {};
+                }
                 _this2.runningCommand[name] = child;
 
                 var errors = "";
@@ -210,7 +213,7 @@ var Pm2Module = function () {
         key: '_killRunningCommand',
         value: function _killRunningCommand(name) {
             try {
-                if (this.runningCommand[name]) {
+                if (this.runningCommand && this.runningCommand[name]) {
                     this.runningCommand[name].kill();
                     this.runningCommand[name] = null;
                 }
