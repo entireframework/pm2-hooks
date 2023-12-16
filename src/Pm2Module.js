@@ -156,6 +156,7 @@ class Pm2Module {
                 this.runningCommand = {};
             }
             this.runningCommand[name] = child;
+            console.log('_runCommand', name, this.runningCommand)
 
             let errors = "";
 
@@ -184,6 +185,7 @@ class Pm2Module {
 
     static _killRunningCommand(name) {
         try {
+            console.log('_killRunningCommand', name, this.runningCommand)
             if (this.runningCommand && this.runningCommand[name]) {
                 this.runningCommand[name].kill();
                 this.runningCommand[name] = null;
