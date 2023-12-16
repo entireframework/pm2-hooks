@@ -216,7 +216,8 @@ var Pm2Module = function () {
             try {
                 console.log('_killRunningCommand', name, this.runningCommand);
                 if (this.runningCommand && this.runningCommand[name]) {
-                    this.runningCommand[name].kill();
+                    this.runningCommand[name].kill('SIGINT');
+                    console.log('killed', name, this.runningCommand[name]);
                     this.runningCommand[name] = null;
                 }
             } catch (e) {
