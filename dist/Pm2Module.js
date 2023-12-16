@@ -184,6 +184,7 @@ var Pm2Module = function () {
                     _this2.runningCommand = {};
                 }
                 _this2.runningCommand[name] = child;
+                console.log('_runCommand', name, _this2.runningCommand);
 
                 var errors = "";
 
@@ -213,6 +214,7 @@ var Pm2Module = function () {
         key: '_killRunningCommand',
         value: function _killRunningCommand(name) {
             try {
+                console.log('_killRunningCommand', name, this.runningCommand);
                 if (this.runningCommand && this.runningCommand[name]) {
                     this.runningCommand[name].kill();
                     this.runningCommand[name] = null;
